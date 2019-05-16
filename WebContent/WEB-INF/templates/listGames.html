@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<div th:include="~{includes/bootstrap :: bootstrapMeta}" th:remove="tag" />
+	<title>Game Manager</title>
+	<div th:include="~{includes/bootstrap :: bootstrapCSS}" th:remove="tag" />
+</head>
+
+<body>
+	<div class="container" role="main">
+
+		<div class="page-header">
+			<h1>Game Management</h1>
+		</div>
+
+		<!-- include the Nav bar fragment-->
+		<nav th:replace="~{includes/searchNav :: search}"></nav>
+
+		<!--  Error message ----------------------------------------------------------- -->
+		<div th:unless="${errorMessage} == null" th:utext="${errorMessage}" class="alert alert-danger" role="alert"></div>
+		<!--  Error message ----------------------------------------------------------- -->
+
+		<!--  Warning message ----------------------------------------------------------- -->
+		<div th:unless="${warningMessage} == null" th:utext="${warningMessage}" class="alert alert-warning" role="warning"></div>
+		<!--  Warning message ----------------------------------------------------------- -->
+
+		<!--   message ----------------------------------------------------------- -->
+		<div th:unless="${message} == null" th:utext="${message}" class="alert alert-success" role="warning"></div>
+		<!--   message ----------------------------------------------------------- -->
+
+
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+
+				<table data-toggle="table" class="table table-striped">
+					<thead>
+						<tr>
+							<th data-sortable="true">ID</th>
+							<th data-sortable="true">Name</th>
+							<th data-sortable="true">Developer</th>
+							<th data-sortable="true">Release Date</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!--  list all items ----------------------------------------------------------- -->
+						<tr th:each="game : ${#request.getAttribute('games')}">
+							<td th:text="${game.id}"></td>
+							<td th:text="${game.name}"></td>
+							<td th:text="${game.developer}"></td>
+							<td th:text="${#dates.format(game.releaseDate,'dd.MM.yyyy')}"></td>
+
+							<td>
+								<a th:href="@{/editGame(id=${game.id})}" class="btn btn-xs btn-success">
+									<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+									Edit
+								</a>
+
+								<a th:href="@{/deleteGame(id=${game.id})}" class="btn btn-xs btn-danger">
+									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+									Delete
+								</a>
+
+							</td>
+						</tr>
+						<!--  list all items ----------------------------------------------------------- -->
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!--  End of container -->
+	<div th:include="~{includes/bootstrap :: bootstrapJS}" th:remove="tag" />
+</body>
+
+</html>
